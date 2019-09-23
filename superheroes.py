@@ -52,20 +52,39 @@ class Hero:
     def is_alive (self):
         return self.current_health > 0
 
-        
+    def fight (self, opponent):
+        print('A brawl is happening between  ' + self.name + ' and ' +
+              opponent.name + '! Who will be victorious?')
+        # choose first attacker
+        fighter = random.randint(0, 1)
+        rounds = 0
+        while self.is_alive() and opponent.is_alive() and rounds < 200:
+            if fighter == 0:
+                damage = self.attack()
+                print(damage)
+                opponent.take_damage(damage)
+                fighter = 0
+            else:
+                damage = opponent.attack()
+                print(damage)
+                self.take_damage(damage)
+                fighter = 1
+            print('{}: {} HP | {}: {} HP'.
+                  format(self.name, self.current_health,
+                         opponent.name, opponent.current_health))
 
 if __name__ == "__main__":
 
     #tests
-hero1 = Hero("Wonder Woman")
-hero2 = Hero("Dumbledore")
-ability1 = Ability("Super Speed", 300)
-ability2 = Ability("Super Eyes", 130)
-ability3 = Ability("Wizard Wand", 80)
-ability4 = Ability("Wizard Beard", 20)
-hero1.add_ability(ability1)
-hero1.add_ability(ability2)
-hero2.add_ability(ability3)
-hero2.add_ability(ability4)
-hero1.fight(hero2)
+    hero1 = Hero("Wonder Woman")
+    hero2 = Hero("Dumbledore")
+    ability1 = Ability("Super Speed", 300)
+    ability2 = Ability("Super Eyes", 130)
+    ability3 = Ability("Wizard Wand", 80)
+    ability4 = Ability("Wizard Beard", 20)
+    hero1.add_ability(ability1)
+    hero1.add_ability(ability2)
+    hero2.add_ability(ability3)
+    hero2.add_ability(ability4)
+    hero1.fight(hero2)
 
