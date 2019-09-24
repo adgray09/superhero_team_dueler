@@ -3,10 +3,10 @@ class Animal:
         self.name = name
 
     def eat (self):
-        print(self.name + " is eating")
+        print('{} is eating'.format(self.name))
 
     def drink(self):
-        print(self.name + " is drinking")
+        print('{} is drinking'.format(self.name))
 
 jerry = Animal("Jerry")
 

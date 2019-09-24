@@ -73,6 +73,11 @@ class Hero:
                   format(self.name, self.current_health,
                          opponent.name, opponent.current_health))
 
+class Weapon(Ability):
+    def attack(self):
+        return random.randint(self.max_damage//2, self.max_damage)
+
+
 if __name__ == "__main__":
 
     #tests
