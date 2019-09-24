@@ -68,7 +68,7 @@ class Hero:
                 damage = opponent.attack()
                 print(damage)
                 self.take_damage(damage)
-                fighter = 1
+                fighter = 0
             print('{}: {} HP | {}: {} HP'.
                   format(self.name, self.current_health,
                          opponent.name, opponent.current_health))
