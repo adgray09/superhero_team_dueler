@@ -121,8 +121,10 @@ class Team:
             if hero.is_alive() == False:
                 hero.current_health = hero.starting_health
 
-    #def stats(self):
-
+    def stats(self):
+        for hero in self.heroes:
+            ratio = hero.kills / hero.deaths
+            print(hero.name + "'s KD ratio is" + ratio)
 
 if __name__ == "__main__":
 
