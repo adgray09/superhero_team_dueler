@@ -26,6 +26,8 @@ class Hero:
         self.name = name
         self.starting_health = starting_health
         self.current_health = self.starting_health
+        self.deaths = 0
+        self.kills = 0
 #adding ability to certain hero
     def add_ability(self, ability):
         self.abilities.append(ability)
@@ -52,6 +54,12 @@ class Hero:
     def is_alive (self):
         return self.current_health > 0
 
+    def add_kills(self, num_kills=1):
+        self.kills += num_kills
+
+    def add_deaths(self, num_deaths=1):
+        self.deaths += num_deaths
+
     def fight (self, opponent):
         print('A brawl is happening between  ' + self.name + ' and ' +
               opponent.name + '! Who will be victorious?')
@@ -72,6 +80,17 @@ class Hero:
             print('{}: {} HP | {}: {} HP'.
                   format(self.name, self.current_health,
                          opponent.name, opponent.current_health))
+        
+        if (self.is_alive()):
+            self.add_kills()
+            opponent.add_deaths()
+            print(self.name + ' Won the brawl!')
+        elif (opponent.is_alive()):
+            self.add_deaths()
+            opponent.add_kills()
+            print(opponent.name + ' Won the brawl!')
+        else: 
+            print("Draw!")
 
 class Weapon(Ability):
     def attack(self):
@@ -94,6 +113,16 @@ class Team:
 
     def add_hero(self, hero):
         self.heroes.append(hero)
+
+    #def attack(self, other_team):
+
+    def revive_heroes(self, health=100):
+        for hero in self.heroes:
+            if hero.is_alive() == False:
+                hero.current_health = hero.starting_health
+
+    #def stats(self):
+
 
 if __name__ == "__main__":
 
