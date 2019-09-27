@@ -105,11 +105,16 @@ class Arena:
         self.team_two: None
 
     def create_ability(self):
-        name = input("Please enter the name of your ability.\n")
+        name = input("Name of your ability?\n")
         max_damage = input("Please enter the maximum damage of your ability.\n")
         new_ability = Ability(name, max_damage)
         return new_ability
 
+    def create_weapon(self):
+        weapon_name = input("Name of your weapon?\n")
+        max_damage = input("Enter the maximum damage of your weapon.\n")
+        new_weapon = Weapon(weapon_name, max_damage)
+        return new_weapon
 
 
 class Team:
