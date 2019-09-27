@@ -16,7 +16,7 @@ class Armor:
         self.max_block = max_block
     
     def block (self):
-        random.randint(0, self.max_block)
+        return random.randint(0, self.max_block)
 
 # certain hero 
 class Hero:
@@ -42,11 +42,11 @@ class Hero:
     def add_armor (self, armor):
         self.armors.append(armor)
 # defense
-    def defend(self, damage_amt):
-        total_defense = 0
-        for hero in self.armors:
-            total_defense += hero.block()
-        return total_defense
+    def defend(self):
+        total_block = 0
+        for block in self.armors:
+            total_block += block.block()
+        return total_block
 
     def take_damage (self, damage):
         self.current_health -= damage
@@ -114,8 +114,14 @@ class Team:
     def add_hero(self, hero):
         self.heroes.append(hero)
 
-    #def attack(self, other_team):
+    def attack(self, other_team):
 
+        while self.heroes and other_team.heroes:
+            hero_1 = random.choice(self.heroes)
+            hero_2 = random.choice(other_team.heroes)
+            if hero_1.is_alive() and hero_2.is_alive():
+                hero_1.fight(hero_2) 
+        
     def revive_heroes(self, health=100):
         for hero in self.heroes:
             if hero.is_alive() == False:
@@ -125,7 +131,7 @@ class Team:
         for hero in self.heroes:
             ratio = hero.kills / hero.deaths
             print(hero.name + "'s KD ratio is" + ratio)
-
+            
 if __name__ == "__main__":
 
     #tests
