@@ -60,6 +60,9 @@ class Hero:
     def add_deaths(self, num_deaths=1):
         self.deaths += num_deaths
 
+    def add_weapon(self, weapon):
+        self.abilities.append(weapon)
+
     def fight (self, opponent):
         print('A brawl is happening between  ' + self.name + ' and ' +
               opponent.name + '! Who will be victorious?')
@@ -95,6 +98,19 @@ class Hero:
 class Weapon(Ability):
     def attack(self):
         return random.randint(self.max_damage//2, self.max_damage)
+
+class Arena:
+    def __init__ (self):
+        self.tean_one: None
+        self.team_two: None
+
+    def create_ability(self):
+        name = input("Please enter the name of your ability.\n")
+        max_damage = input("Please enter the maximum damage of your ability.\n")
+        new_ability = Ability(name, max_damage)
+        return new_ability
+
+
 
 class Team:
     def __init__ (self, name):
