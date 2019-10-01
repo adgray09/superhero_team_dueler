@@ -104,6 +104,9 @@ class Arena:
         self.tean_one: None
         self.team_two: None
 
+        self.team_one = Team("team_one")
+        self.team_two = Team("team_two")
+
     def create_ability(self):
         name = input("Name of your ability?\n")
         max_damage = input("Please enter the maximum damage of your ability.\n")
@@ -116,6 +119,49 @@ class Arena:
         new_weapon = Weapon(weapon_name, max_damage)
         return new_weapon
 
+    def create_armor(self):
+        armor_name = input("Name of your armor?.\n")
+        max_block = input("Strength of armor?\n")
+        new_armor = Armor(armor_name, max_block)
+        return new_armor
+
+    def create_hero(self):
+        hero_name = input("Name of your hero?\n")
+        hero_health = input("Health of your hero?\n")
+        new_hero = Hero(hero_name, hero_health)
+        return new_hero
+
+    def build_team_one(self):
+        num_heroes = int(input("How many heroes would you like on team one? "))
+        self.team_one = Team(input("What would you like the team name to be? "))
+        for _ in range(0, num_heroes):
+            self.team_one.heroes.append(self.create_hero())
+        
+    def build_team_two(self):
+        num_heroes = int(input("How many heroes would you like on team two? "))
+        self.team_two = Team(input("What would you like the team name to be? "))
+        for _ in range(0, num_heroes):
+            self.team_two.heroes.append(self.create_hero())
+
+    def team_battle(self):
+        self.team_one.attack(self.team_two)
+
+    def show_stats(self):
+        team_one_total_kills = 0
+        team_one_total_deaths = 0
+        team_two_total_kills = 0
+        team_two_total_deaths = 0
+        for hero in self.team_one.heroes:
+            team_one_total_kills += hero.kills
+            team_one_total_deaths += hero.deaths
+        for hero in self.team_two.heroes:
+            team_two_total_kills += hero.kills
+            team_two_total_deaths += hero.deaths
+        
+        team_one_ratio = team_one_total_kills / team_one_total_deaths
+        team_two_ratio = team_two_total_kills / team_two_total_deaths
+        print("Team ones K:D ratio: " + str(team_one_ratio))
+        print("Team twos K:D ratio: " + str(team_two_ratio))
 
 class Team:
     def __init__ (self, name):
@@ -155,7 +201,9 @@ class Team:
             
 if __name__ == "__main__":
 
-    #tests
+
+
+   ''' tests
     hero1 = Hero("Wonder Woman")
     hero2 = Hero("Dumbledore")
     ability1 = Ability("Super Speed", 300)
@@ -166,5 +214,5 @@ if __name__ == "__main__":
     hero1.add_ability(ability2)
     hero2.add_ability(ability3)
     hero2.add_ability(ability4)
-    hero1.fight(hero2)
+    hero1.fight(hero2)'''
 
