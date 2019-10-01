@@ -1,5 +1,9 @@
 import random
 
+
+# would like to thank Cristian Lenberger for the help on my arena class
+
+
 # adding ability
 class Ability:
     def  __init__ (self, name, max_damage):
@@ -201,18 +205,19 @@ class Team:
             
 if __name__ == "__main__":
 
+    running = True 
+    arena = Arena()
+    arena.build_team_one()
+    arena.build_team_two()
+    while running:
+        arena.team_battle()
+        arena.show_stats()
+        play_again = input("Play Again? Y or N: ")
 
+        if play_again.lower() == "n":
+            running  = False
+        else:
+            arena.team_one.revive_heroes()
+            arena.team_two.revive_heroes()
 
-   ''' tests
-    hero1 = Hero("Wonder Woman")
-    hero2 = Hero("Dumbledore")
-    ability1 = Ability("Super Speed", 300)
-    ability2 = Ability("Super Eyes", 130)
-    ability3 = Ability("Wizard Wand", 80)
-    ability4 = Ability("Wizard Beard", 20)
-    hero1.add_ability(ability1)
-    hero1.add_ability(ability2)
-    hero2.add_ability(ability3)
-    hero2.add_ability(ability4)
-    hero1.fight(hero2)'''
 
