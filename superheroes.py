@@ -1,7 +1,7 @@
 import random
 
 
-# would like to thank Cristian Lenberger for the help on my arena class
+# would like to thank Cristian Lenberger for the help on my arena class as well as the team testing. Had to find errors in pasted code from tutorial.
 
 
 # adding ability
@@ -29,7 +29,7 @@ class Hero:
         self.armors = []
         self.name = name
         self.starting_health = starting_health
-        self.current_health = self.starting_health
+        self.current_health = starting_health
         self.deaths = 0
         self.kills = 0
 #adding ability to certain hero
@@ -38,8 +38,8 @@ class Hero:
 
     def attack (self):
         dmg = 0 
-        for abilities in self.abilities:
-            dmg += abilities.attack()
+        for ability in self.abilities:
+            dmg += ability.attack()
         return dmg
 
 # adding armor to certain hero 
@@ -53,11 +53,20 @@ class Hero:
         return total_block
 
     def take_damage (self, damage):
-        self.current_health -= damage
+        if damage - self.defend() > 0:
+            self.current_health -= (damage - self.defend())
+            print(self.name + " HP: " + str(self.current_health))
+        else:
+            print("The attack was blocked")
+            print(self.name + " HP: " + str(self.current_health))
 
-    def is_alive (self):
-        return self.current_health > 0
+    def is_alive(self):
+        if int(self.current_health) > 0:
+            return True
+        else: 
+            return False
 
+        
     def add_kills(self, num_kills=1):
         self.kills += num_kills
 
@@ -68,26 +77,23 @@ class Hero:
         self.abilities.append(weapon)
 
     def fight (self, opponent):
-        print('A brawl is happening between  ' + self.name + ' and ' +
-              opponent.name + '! Who will be victorious?')
+        print('A brawl is happening between  ' + self.name + ' and ' +opponent.name + '! Who will be victorious?')
         # choose first attacker
-        fighter = random.randint(0, 1)
-        rounds = 0
-        while self.is_alive() and opponent.is_alive() and rounds < 200:
-            if fighter == 0:
-                damage = self.attack()
-                print(damage)
-                opponent.take_damage(damage)
-                fighter = 0
+        while self.is_alive() and opponent.is_alive():
+            if self.abilities or opponent.abilities:
+                self.take_damage(opponent.attack())
+                opponent.take_damage(self.attack())
             else:
-                damage = opponent.attack()
-                print(damage)
-                self.take_damage(damage)
-                fighter = 0
-            print('{}: {} HP | {}: {} HP'.
-                  format(self.name, self.current_health,
-                         opponent.name, opponent.current_health))
-        
+                print("DRAW!")
+        if self.current_health <= 0:
+            print(opponent.name + " is the winner!")
+            opponent.add_kills(1)
+            self.add_deaths(1)
+            
+        else:
+            print(self.name + " is the winner!")
+            self.add_kills(1)
+            opponent.add_deaths(1)
         if (self.is_alive()):
             self.add_kills()
             opponent.add_deaths()
@@ -100,39 +106,48 @@ class Hero:
             print("Draw!")
 
 class Weapon(Ability):
+    def __init__(self, name, max_damage):
+        super().__init__(name, max_damage)
+    
     def attack(self):
         return random.randint(self.max_damage//2, self.max_damage)
 
 class Arena:
-    def __init__ (self):
-        self.tean_one: None
+    def __init__(self):
+        self.team_one: None
         self.team_two: None
 
-        self.team_one = Team("team_one")
-        self.team_two = Team("team_two")
-
     def create_ability(self):
-        name = input("Name of your ability?\n")
-        max_damage = input("Please enter the maximum damage of your ability.\n")
+        name = input("Enter the name of the heroes ability: ")
+        max_damage = int(input("Enter the maximum damage of the heroes ability: "))
         new_ability = Ability(name, max_damage)
         return new_ability
 
     def create_weapon(self):
-        weapon_name = input("Name of your weapon?\n")
-        max_damage = input("Enter the maximum damage of your weapon.\n")
-        new_weapon = Weapon(weapon_name, max_damage)
+        name = input("Enter the name of the heroes weapon: ")   
+        max_damage = int(input("Enter the maximum damage of the heroes weapon: "))
+        new_weapon = Weapon(name, max_damage)
         return new_weapon
 
     def create_armor(self):
-        armor_name = input("Name of your armor?.\n")
-        max_block = input("Strength of armor?\n")
-        new_armor = Armor(armor_name, max_block)
+        name = input("Enter the type of heroes armor: ")
+        max_block = int(input("Please enter the maximum block of the heroes armor: "))
+        new_armor = Armor(name, max_block)
         return new_armor
 
     def create_hero(self):
-        hero_name = input("Name of your hero?\n")
-        hero_health = input("Health of your hero?\n")
-        new_hero = Hero(hero_name, hero_health)
+        name = input("Enter the name of your hero: ")
+        starting_health = int(input("Enter the starting health of your hero: "))
+        new_hero = Hero(name, starting_health)
+        num_abilities = int(input("How many abilities does your hero have? "))
+        for _ in range(0, num_abilities):
+            new_hero.add_ability(self.create_ability())
+        num__weapons = int(input("How many weapons does your hero have? "))
+        for _ in range(0, num__weapons):
+            new_hero.add_weapon(self.create_weapon())
+        num_armor = int(input("How many armors does your hero have? "))
+        for _ in range(0, num_armor):
+            new_hero.add_armor(self.create_armor())
         return new_hero
 
     def build_team_one(self):
@@ -166,6 +181,7 @@ class Arena:
         team_two_ratio = team_two_total_kills / team_two_total_deaths
         print("Team ones K:D ratio: " + str(team_one_ratio))
         print("Team twos K:D ratio: " + str(team_two_ratio))
+
 
 class Team:
     def __init__ (self, name):
